@@ -131,6 +131,7 @@ def _convert_to_example(filename, image_buffer, label, embedding, synset, height
   example = tf.train.Example(features=tf.train.Features(feature={
       'image/height': _int64_feature(height),
       'image/width': _int64_feature(width),
+      'image/shape': _int64_feature([height, width, channels]),
       'image/colorspace': _bytes_feature(colorspace),
       'image/channels': _int64_feature(channels),
       'image/class/label': _int64_feature(label),
