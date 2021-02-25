@@ -188,7 +188,7 @@ class ImageCoder(object):
 
     # Initializes function that converts PNG to JPEG data.
     self._png_data = tf.placeholder(dtype=tf.string)
-    image = tf.io.decode_image(self._png_data, channels=3)
+    image = tf.io.decode_image(self._png_data, channels=3, expand_animations=False)
     #image = _transform_image(image, target_image_shape=[FLAGS.resize, FLAGS.resize] if FLAGS.resize > 0 else None, crop_method=FLAGS.crop_method)
     image = _transform_image(image, target_image_shape=[options["resize"], options["resize"]] if options["resize"] > 0 else None, crop_method=options["crop_method"])
     self._to_jpeg = (tf.image.encode_jpeg(tf.cast(image, tf.uint8), format='rgb', quality=100), image)
@@ -477,6 +477,9 @@ def convert_to_tf_records():
   return training_records
 
 def main(argv):  # pylint: disable=unused-argument
+  
+  tf.compat.v1.disable_eager_execution()
+  
   tf.logging.set_verbosity(tf.logging.INFO)
 
   if FLAGS.name is None:
